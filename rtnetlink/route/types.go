@@ -1,0 +1,20 @@
+package route
+
+type Type byte
+
+const (
+  RTN_UNSPEC Type = iota
+  RTN_UNICAST
+  RTN_LOCAL
+  RTN_BROADCAST
+  RTN_ANYCAST
+  RTN_MULTICAST
+  RTN_BLACKHOLE
+  RTN_UNREACHABLE
+  RTN_PROHIBIT
+  RTN_THROW
+  RTN_NAT
+  RTN_XRESOLVE
+  __RTN_MAX
+)
+

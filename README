@@ -1,0 +1,23 @@
+
+  GoNetlink aims to provide native bindings (no external libraries) to NetLink for Go.
+
+  It is a child project of GoGo (not released yet), but is growing to be usable in its own right at least
+as a reference project on "how to (start) talking to netlink with go".
+
+  All API's are subject to change, and patches are absolutely welcome.
+
+  There's a very good chance there will be issues on non i386/amd64 archs, as they have not been tested
+and netlink doesn't always specify byte order.
+
+  Currently working:
+  - Enumerating interfaces
+  - Modifying flags (Up/down/etc) on interfaces
+  - Adding addresses on interfaces
+
+  TODO:
+  - The inverse of the above
+  - Routing attributes
+  - Substantial cleanup of the NLATTR/RTATTR behaviour
+  - "Generification" of the netlink process.
+
+

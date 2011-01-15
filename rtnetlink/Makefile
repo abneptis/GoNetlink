@@ -1,17 +1,17 @@
 include $(GOROOT)/src/Make.inc
 
-TARG=netlink/route
+TARG=netlink/rtnetlink
 
 DEPS=../
 
 
 GOFILES=\
 	calls.go\
-	interface_info.go\
-	interface_addr.go\
-	interface_flags.go\
-	link_attributes.go\
-	link_address.go\
+	interface/interface_info.go\
+	interface/interface_addr.go\
+	interface/interface_flags.go\
+	link/link_attributes.go\
+	link/link_address.go\
 	message_types.go\
 	mtu.go\
 

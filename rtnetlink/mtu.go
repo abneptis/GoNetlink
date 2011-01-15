@@ -1,4 +1,4 @@
-package route
+package rtnetlink
 // netlink/route
 
 import "netlink"

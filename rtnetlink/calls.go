@@ -1,4 +1,4 @@
-package route
+package rtnetlink
 
 import "syscall"
 import "netlink"

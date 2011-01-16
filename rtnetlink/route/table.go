@@ -1,5 +1,7 @@
 package route
 
+import "fmt"
+
 type Table byte
 
 const (
@@ -11,3 +13,21 @@ const (
         // Cant be used in Go (wrong size)
         //RT_TABLE_MAX=0xFFFFFFFF
 )
+
+
+
+var TableStrings = map[Table]string {
+  RT_TABLE_UNSPEC: "RT_TABLE_UNSPEC",
+  RT_TABLE_COMPAT: "RT_TABLE_COMPAT",
+  RT_TABLE_DEFAULT: "RT_TABLE_DEFAULT",
+  RT_TABLE_MAIN: "RT_TABLE_MAIN",
+  RT_TABLE_LOCAL: "RT_TABLE_LOCAL",
+}
+
+func (self Table)String()(out string){
+  out = TableStrings[self]
+  if out == "" {
+    out = fmt.Sprintf("RT_TABLE_%d", self)
+  }
+  return
+}

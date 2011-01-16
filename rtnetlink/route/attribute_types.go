@@ -13,7 +13,10 @@ const (
   RTA_PREFSRC
   RTA_METRICS
   RTA_MULTIPATH
-  RTA_PROTOINFO
+  RTA_PROTOINFO // Deprecated (?)
   RTA_FLOW
   RTA_CACHEINFO
+  RTA_SESSION // Deprecated (?)
+  RTA_MP_ALGO // Deprecated (?)
+  RTA_TABLE
 )

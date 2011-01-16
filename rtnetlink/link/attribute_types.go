@@ -1,4 +1,4 @@
-package rtnetlink
+package link
 
 import "netlink"
 
@@ -27,14 +27,3 @@ const (
   IFLA_MAX
 )
 
-const (
-  IFA_UNSPEC netlink.AttributeType = iota
-  IFA_ADDRESS
-  IFA_LOCAL
-  IFA_LABEL
-  IFA_BROADCAST
-  IFA_ANYCAST
-  IFA_CACHEINFO
-  IFA_MULTICAST
-  IFA_MAX
-)

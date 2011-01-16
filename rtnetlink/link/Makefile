@@ -1,15 +1,13 @@
 include $(GOROOT)/src/Make.inc
 
-TARG=netlink/rtnetlink
+TARG=netlink/rtnetlink/link
 
 DEPS=../
 
 
 GOFILES=\
-	common/scope.go\
-	message_types.go\
 	header.go\
-	message.go\
+	attribute_types.go\
 
 
 include $(GOROOT)/src/Make.pkg

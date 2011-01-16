@@ -22,6 +22,17 @@ type nlmsg struct {
   _Body []byte
 }
 
+type NetlinkMarshaler interface {
+  MarshalNetlink(int)([]byte, os.Error)
+}
+
+func NewMessage2(t MessageType, f MessageFlags, u NetlinkMarshaler)(msg *nlmsg, err os.Error){
+  msg = &nlmsg{_Type:t, _Flags: f, _Sequence: 0, _Pid: 0}
+  msg._Body, err = u.MarshalNetlink(4)
+  return
+}
+
+
 func NewMessage(t MessageType, f MessageFlags, umsg Marshaler)(msg *nlmsg, err os.Error){
   msg = &nlmsg{_Type:t, _Flags: f, _Sequence: 0, _Pid: 0}
   msg._Body, err = umsg.Marshal()

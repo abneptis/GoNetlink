@@ -14,7 +14,6 @@ GOFILES=\
 	link/link_address.go\
 	common/scope.go\
 	message_types.go\
-	mtu.go\
 
 
 include $(GOROOT)/src/Make.pkg

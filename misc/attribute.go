@@ -57,12 +57,12 @@ func UnmarshalAttributes(in []byte, padding int)(out []Attribute, err os.Error){
       err = os.NewError("Can't parse attribute (too long)")
       break
     }
-    if l > 0 {
+    if l > 4 {
       t := binary.LittleEndian.Uint16(in[pos+2:pos+4])
-      out = append(out, attr{_type: AttributeType(t), _body:in[pos+4:l - 4]})
+      out = append(out, attr{_type: AttributeType(t), _body:in[pos+4:pos + int(l)]})
       pos += int(l)
-      if padding > 0 {
-        if pos % padding != 0 { pos += padding - (pos % padding) }
+      if padding > 0 && pos % padding != 0 {
+        pos += padding - (pos % padding)
       }
     } else {
       err = os.NewError("Invalid attribute length.")

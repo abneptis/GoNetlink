@@ -1,0 +1,5 @@
+Subdirectories represent sub 'classes' (Netlink MessageType) of RTNetlink;  So RTM_[DEL|GET|SET]ROUTE structures would all be in route/
+
+Interface, Link and call will likely be rewritten to be more similar to the behaviour of 'route', but these placeholders should work for now.
+
+

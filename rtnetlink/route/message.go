@@ -2,6 +2,7 @@ package route
 
 import "encoding/binary"
 import "netlink"
+import "netlink/rtnetlink"
 import "os"
 
 
@@ -10,7 +11,7 @@ type Message struct {
   attributes []netlink.Attribute
 }
 
-func NewMessage(afam byte, dl uint8, sl uint8, tos uint8, t Table, o Origin, s Scope, T Type, f Flags)(*Message){
+func NewMessage(afam byte, dl uint8, sl uint8, tos uint8, t Table, o Origin, s rtnetlink.Scope, T Type, f Flags)(*Message){
   hdr := [12]byte{afam, dl, sl, tos, byte(t), byte(o), byte(s), byte(T)}
   binary.LittleEndian.PutUint32(hdr[8:12], uint32(f))
   return &Message{
@@ -24,7 +25,7 @@ func (self Message)AddressSourceLength()(uint8){ return self.header[2] }
 func (self Message)TOS()(uint8){ return self.header[3] }
 func (self Message)RoutingTable()(Table){ return Table(self.header[4]) }
 func (self Message)RouteOrigin()(Origin){ return Origin(self.header[5]) }
-func (self Message)AddressScope()(Scope){ return Scope(self.header[6]) }
+func (self Message)AddressScope()(rtnetlink.Scope){ return rtnetlink.Scope(self.header[6]) }
 func (self Message)RouteType()(Type){ return Type(self.header[7]) }
 func (self Message)Flags()(Flags) { return Flags(binary.LittleEndian.Uint32(self.header[8:12])) }
 

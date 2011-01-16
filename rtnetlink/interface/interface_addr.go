@@ -9,7 +9,7 @@ type InterfaceAddressMessage struct {
   Family byte
   Prefix byte
   Flags byte
-  Scope LinkScope
+  Scope Scope
   Index int32
   Attributes []netlink.Attribute
 }
@@ -27,7 +27,7 @@ func (self InterfaceAddressMessage)GetAttribute(t netlink.AttributeType)(attr ne
   return
 }
 
-func NewInterfaceAddrMesage(f, p, fl byte, s LinkScope, idx int32,  attrs []netlink.Attribute)(*InterfaceAddressMessage){
+func NewInterfaceAddrMesage(f, p, fl byte, s Scope, idx int32,  attrs []netlink.Attribute)(*InterfaceAddressMessage){
   return &InterfaceAddressMessage{
     Family: f,
     Prefix: p,

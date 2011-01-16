@@ -12,6 +12,7 @@ GOFILES=\
 	interface/interface_flags.go\
 	link/link_attributes.go\
 	link/link_address.go\
+	common/scope.go\
 	message_types.go\
 	mtu.go\
 

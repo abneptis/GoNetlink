@@ -9,7 +9,6 @@ GOFILES=\
 	flags.go\
 	origin.go\
 	message.go\
-	scope.go\
 	table.go\
 	types.go\
 

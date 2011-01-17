@@ -13,6 +13,8 @@ func NewMessage(afam byte, dl uint8, sl uint8, tos uint8, t Table, o Origin, s r
   return &hdr
 }
 
+
+func (self Header)Len()(int) { return 12 }
 func (self Header)AddressFamily()(byte){ return self[0] }
 func (self Header)AddressDestLength()(uint8){ return self[1] }
 func (self Header)AddressSourceLength()(uint8){ return self[2] }

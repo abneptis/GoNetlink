@@ -30,7 +30,7 @@ func main(){
   for i := range( c) {
     switch i.MessageType() {
       case rtnetlink.RTM_NEWROUTE:
-        msg := &route.RoutingMessage{}
+        msg := rtnetlink.NewMessage(&route.Header{}, nil)
         err = msg.UnmarshalNetlink(i.Body(), 4)
         if err == nil {
           log.Printf("NLMsg: %v", msg)

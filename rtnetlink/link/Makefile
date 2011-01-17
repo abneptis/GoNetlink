@@ -8,6 +8,7 @@ DEPS=../
 GOFILES=\
 	header.go\
 	attribute_types.go\
+	flags.go\
 
 
 include $(GOROOT)/src/Make.pkg

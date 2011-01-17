@@ -13,7 +13,7 @@ func NewMessage(h Header, attrs []netlink.Attribute)(*Message){
   return &Message{Header:h, Attributes: attrs}
 }
 
-func _pad(in []byte, pad int)(out []byte){
+func PadBytes(in []byte, pad int)(out []byte){
   if pad > 0 {
     pblk := (len(in) + 1) / pad
     fsize := pblk * pad
@@ -47,7 +47,7 @@ func (self Message)MarshalNetlink(pad int)(out []byte, err os.Error){
       buff.Write(bb)
     }
   }
-  out = _pad(buff.Bytes(), pad)
+  out = PadBytes(buff.Bytes(), pad)
   return
 }
 

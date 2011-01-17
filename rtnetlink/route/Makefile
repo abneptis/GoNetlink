@@ -8,7 +8,7 @@ DEPS=../
 GOFILES=\
 	flags.go\
 	origin.go\
-	message.go\
+	header.go\
 	table.go\
 	types.go\
 

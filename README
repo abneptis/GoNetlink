@@ -4,20 +4,17 @@
   It is a child project of GoGo (not released yet), but is growing to be usable in its own right at least
 as a reference project on "how to (start) talking to netlink with go".
 
-  All API's are subject to change, and patches are absolutely welcome.
+  All API's are subject to change, and patches are absolutely welcome.  Currently the basic API attempts to mirror
+that of RTNetlink usage, though higher-level access is a side goal of this project.
 
   There's a very good chance there will be issues on non i386/amd64 archs, as they have not been tested
 and netlink doesn't always specify byte order.
 
   Currently working:
-  - Enumerating interfaces
-  - Modifying flags (Up/down/etc) on interfaces
-  - Adding addresses on interfaces
+  - RTNetlink: route, link, and addr calls (marshal, unmarshal, get attributes)
 
-  TODO:
-  - The inverse of the above
-  - Routing attributes
-  - Substantial cleanup of the NLATTR/RTATTR behaviour
-  - "Generification" of the netlink process.
-
-
+  TODO (maybe):
+  - NFQueue, SELinux, IPTables (when mainlined, or closer)
+  - add tests
+  - test on ARM (is ARM big-Endian?)
+  - Higher level manipulation API

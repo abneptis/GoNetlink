@@ -6,6 +6,7 @@ TARG=netlink
 GOFILES=\
 	misc/attribute.go\
 	misc/pad.go\
+	misc/attr_helpers.go\
 	message/flags.go\
 	message/types.go\
 	message/header.go\

@@ -13,6 +13,28 @@ func NewMessage(h Header, attrs []netlink.Attribute)(*Message){
   return &Message{Header:h, Attributes: attrs}
 }
 
+func (self *Message)SetAttribute(attr netlink.Attribute){
+  t := attr.AttributeType()
+  for i := range(self.Attributes){
+    if t == self.Attributes[i].AttributeType() {
+      self.Attributes[i] = attr
+      return
+    }
+  }
+  self.Attributes = append(self.Attributes, attr)
+  return
+}
+
+func (self Message)GetAttribute(t netlink.AttributeType)(attr netlink.Attribute, err os.Error){
+  for i := range(self.Attributes){
+    if t == self.Attributes[i].AttributeType() {
+      attr = self.Attributes[i]
+      return
+    }
+  }
+  err = os.NewError("Attribute not found")
+  return
+}
 
 func (self Message)MarshalNetlink(pad int)(out []byte, err os.Error){
   buff := bytes.NewBuffer(nil)

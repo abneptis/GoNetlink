@@ -30,9 +30,15 @@ func main(){
   for i := range( c) {
     switch i.Header.MessageType() {
       case rtnetlink.RTM_NEWROUTE:
-        msg := rtnetlink.NewMessage(&route.Header{}, nil)
+        hdr := &route.Header{}
+        msg := rtnetlink.NewMessage(hdr, nil)
         err = msg.UnmarshalNetlink(i.Body, 4)
+
         if err == nil {
+           log.Printf("Route: %v (%d/%d) TOS: %d; (Table: %v; Origin: %v; Scope: %v; Type: %v; Flags: %v",
+                      hdr.AddressFamily(), hdr.AddressDestLength(), hdr.AddressSourceLength(),
+                      hdr.TOS(), hdr.RoutingTable(), hdr.RouteOrigin(), hdr.AddressScope(),
+                      hdr.RouteType(), hdr.Flags())
            for i := range(msg.Attributes){
              log.Printf("Attribute[%d]: %v", i, msg.Attributes[i])
            }

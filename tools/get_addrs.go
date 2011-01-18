@@ -39,9 +39,14 @@ func main(){
   for i := range( c) {
     switch i.Header.MessageType() {
       case rtnetlink.RTM_NEWADDR:
-        msg := rtnetlink.NewMessage(&addr.Header{}, nil)
+        hdr := &addr.Header{}
+        msg := rtnetlink.NewMessage(hdr, nil)
         err = msg.UnmarshalNetlink(i.Body, 4)
         if err == nil {
+          log.Printf("Family: %v; Length: %d; Flags: %v; Scope: %v; IFIndex: %d",
+                     hdr.AddressFamily(), hdr.PrefixLength(), hdr.Flags(), hdr.Scope(),
+                     hdr.InterfaceIndex())
+
           for i := range(msg.Attributes) {
             log.Printf("Attribute[%d] = %v", i, msg.Attributes[i])
           }

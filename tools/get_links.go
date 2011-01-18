@@ -4,14 +4,13 @@ package main
    At this moment it exists to test the rtnetlink/route subsystem */
 
 import "os"
-import "netlink/rtnetlink/route"
+import "netlink/rtnetlink/link"
 import "netlink/rtnetlink"
 import "log"
 import "netlink"
 
 func main(){
-  rtmsg := route.NewMessage(0,0,0,0,0,0,0,0,0)
-  nlmsg, err := netlink.NewMessage(rtnetlink.RTM_GETROUTE, netlink.NLM_F_DUMP|netlink.NLM_F_REQUEST, rtmsg, 2)
+  nlmsg, err := netlink.NewMessage(rtnetlink.RTM_GETLINK, netlink.NLM_F_DUMP|netlink.NLM_F_REQUEST, &link.Header{},4)
   if err != nil {
     log.Exitf("Couldn't construct message: %v", err)
   }
@@ -29,13 +28,13 @@ func main(){
   }
   for i := range( c) {
     switch i.Header.MessageType() {
-      case rtnetlink.RTM_NEWROUTE:
-        msg := rtnetlink.NewMessage(&route.Header{}, nil)
+      case rtnetlink.RTM_NEWLINK:
+        msg := rtnetlink.NewMessage(&link.Header{}, nil)
         err = msg.UnmarshalNetlink(i.Body, 4)
         if err == nil {
-           for i := range(msg.Attributes){
-             log.Printf("Attribute[%d]: %v", i, msg.Attributes[i])
-           }
+          for i := range(msg.Attributes){
+            log.Printf("Attribute[%d]: %v", i, msg.Attributes[i])
+          }
         } else {
           log.Printf("Unmarshal error: %v", err)
         }

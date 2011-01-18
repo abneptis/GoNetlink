@@ -4,43 +4,55 @@ package main
    At this moment it exists to test the rtnetlink/route subsystem */
 
 import "os"
-import "netlink/rtnetlink/route"
+import "netlink/rtnetlink/addr"
 import "netlink/rtnetlink"
 import "log"
 import "netlink"
 
+func logec(c chan os.Error){
+  for i := range(c) {
+    log.Printf("Error: %v", i)
+  }
+}
+
 func main(){
-  rtmsg := route.NewMessage(0,0,0,0,0,0,0,0,0)
-  nlmsg, err := netlink.NewMessage(rtnetlink.RTM_GETROUTE, netlink.NLM_F_DUMP|netlink.NLM_F_REQUEST, rtmsg, 2)
+  nlmsg, err := netlink.NewMessage(rtnetlink.RTM_GETADDR, netlink.NLM_F_DUMP|netlink.NLM_F_REQUEST, &addr.Header{}, 4)
   if err != nil {
     log.Exitf("Couldn't construct message: %v", err)
   }
+  log.Printf("Dialing: %v", nlmsg)
   nlsock, err := netlink.Dial(netlink.NETLINK_ROUTE)
   if err != nil {
     log.Exitf("Couldn't dial netlink: %v", err)
   }
   h := netlink.NewHandler(nlsock)
   ec := make(chan os.Error)
+  go logec(ec)
   go h.Start(ec)
   c := make(chan netlink.Message)
+  log.Printf("Sending query: %v", nlmsg)
   err = h.SendQuery(*nlmsg, c)
+  log.Printf("Sent query: %v", nlmsg.Header)
   if err != nil {
     log.Exitf("Couldn't write netlink: %v", err)
   }
   for i := range( c) {
     switch i.Header.MessageType() {
-      case rtnetlink.RTM_NEWROUTE:
-        msg := rtnetlink.NewMessage(&route.Header{}, nil)
+      case rtnetlink.RTM_NEWADDR:
+        msg := rtnetlink.NewMessage(&addr.Header{}, nil)
         err = msg.UnmarshalNetlink(i.Body, 4)
         if err == nil {
-           for i := range(msg.Attributes){
-             log.Printf("Attribute[%d]: %v", i, msg.Attributes[i])
-           }
+          for i := range(msg.Attributes) {
+            log.Printf("Attribute[%d] = %v", i, msg.Attributes[i])
+          }
         } else {
           log.Printf("Unmarshal error: %v", err)
         }
       default:
           log.Printf("Unknown type: %v", i)
+    }
+    if err != nil {
+      log.Printf("Handler error: %v", err)
     }
   }
 }

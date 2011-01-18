@@ -6,6 +6,7 @@ DEPS=../
 
 
 GOFILES=\
+	flags.go\
 	header.go\
 	attribute_types.go\
 

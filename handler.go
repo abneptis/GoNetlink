@@ -53,11 +53,10 @@ func (self *Handler)Start(echan chan os.Error){
         echan <- os.NewError(fmt.Sprintf("GoNetlink: No handler found for sequence number: %d", msg.Header.MessageSequence()))
         continue
       } else {
-        switch msg.Header.MessageType() {
-          case NLMSG_DONE:
+        self.recipients[msg.Header.MessageSequence()] <- *msg
+        if msg.Header.MessageFlags() & NLM_F_MULTI == 0 {
             close(self.recipients[msg.Header.MessageSequence()])
             self.recipients[msg.Header.MessageSequence()] = nil, false
-          default: self.recipients[msg.Header.MessageSequence()] <- *msg
         }
       }
     } else {

@@ -1,7 +1,5 @@
 package netlink
 
-import "os"
-
 type MessageFlags uint16
 
 // include/linux/netlink.h
@@ -28,15 +26,4 @@ const (
   NLM_F_CREATE
   NLM_F_APPEND
 )
-
-func (self MessageFlags)Marshal()([]byte, os.Error){
-  return Marshal(uint16(self))
-}
-
-func (self *MessageFlags)Unmarshal(in []byte)( err os.Error){
-  var mt uint16
-  err = Unmarshal(in, &mt)
-  if err == nil { *self = MessageFlags(mt) }
-  return
-}
 

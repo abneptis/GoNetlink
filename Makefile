@@ -4,7 +4,6 @@ TARG=netlink
 
 
 GOFILES=\
-	misc/cstring.go\
 	misc/attribute.go\
 	misc/pad.go\
 	message/flags.go\

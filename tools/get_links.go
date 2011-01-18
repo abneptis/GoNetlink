@@ -27,6 +27,7 @@ func main(){
     log.Exitf("Couldn't write netlink: %v", err)
   }
   for i := range( c) {
+    if i.Header.MessageType() == netlink.NLMSG_DONE { break }
     switch i.Header.MessageType() {
       case rtnetlink.RTM_NEWLINK:
         hdr := &link.Header{}

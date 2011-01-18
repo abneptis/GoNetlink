@@ -1,7 +1,5 @@
 package netlink
 
-//import "bytes"
-//import "encoding/binary"
 import "os"
 import "syscall"
 
@@ -15,7 +13,6 @@ func toErr(eno int)(err os.Error){
 }
 
 func Dial(nlf NetlinkFamily)(rwc *Socket, err os.Error){
-  //func Dial(nlfam netlinkFamily)(rwc netlinkSocket, err os.Error){
   fdno, errno := syscall.Socket(syscall.AF_NETLINK, syscall.SOCK_DGRAM, int(nlf))
   err = toErr(errno)
   if err == nil {
@@ -32,18 +29,12 @@ func (self *Socket)Close()(err os.Error){
 
 
 func (self *Socket)Write(in []byte)(n int, err os.Error){
-  if n < 0 {
-    panic(n)
-  }
   n, errno := syscall.Write(self.fd, in)
   err = toErr(errno)
   return
 }
 
 func (self *Socket)Read(in []byte)(n int, err os.Error){
-  if n < 0 {
-    panic(n)
-  }
   n, errno := syscall.Read(self.fd, in)
   err = toErr(errno)
   return

@@ -29,9 +29,8 @@ func main(){
   ec := make(chan os.Error)
   go logec(ec)
   go h.Start(ec)
-  c := make(chan netlink.Message)
   log.Printf("Sending query: %v", nlmsg)
-  err = h.SendQuery(*nlmsg, c)
+  c, err := h.Query(*nlmsg, 1, 4)
   log.Printf("Sent query: %v", nlmsg.Header)
   if err != nil {
     log.Exitf("Couldn't write netlink: %v", err)

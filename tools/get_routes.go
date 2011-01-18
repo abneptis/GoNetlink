@@ -22,8 +22,7 @@ func main(){
   h := netlink.NewHandler(nlsock)
   ec := make(chan os.Error)
   go h.Start(ec)
-  c := make(chan netlink.Message)
-  err = h.SendQuery(*nlmsg, c)
+  c, err := h.Query(*nlmsg, 1, 4)
   if err != nil {
     log.Exitf("Couldn't write netlink: %v", err)
   }

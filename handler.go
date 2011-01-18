@@ -25,19 +25,13 @@ func NewHandler(sock *Socket)(*Handler){
   return &Handler{sock:sock, recipients: map[uint32]chan Message{}, next_seq: 1}
 }
 
-func (self *Handler)SendQuery(msg Message, ch chan Message)(err os.Error){
-  //log.Printf("Writing Message = %+v", msg.Header)
+func (self *Handler)Query(msg Message, l int, pad int)(ch chan Message, err os.Error){
   if msg.Header.MessageSequence() == 0 {
     msg.Header.SetMessageSequence(self.Seq())
   }
-  if msg.Header.MessageSequence() == 0 {
-    return os.NewError("Failed to set sequence number")
-  }
-  var ob []byte
-  //log.Printf("msg = %v", msg)
-  ob, err = msg.MarshalNetlink(4)
-  //log.Printf("OB: %X; ERR: %v", ob, err)
+  ob, err := msg.MarshalNetlink(pad)
   if err == nil {
+    ch = make(chan Message, l)
     self.recipients[msg.Header.MessageSequence()] = ch
     _, err = self.sock.Write(ob)
   }

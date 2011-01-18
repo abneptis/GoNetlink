@@ -2,20 +2,21 @@ package route
 
 import "encoding/binary"
 import "netlink/rtnetlink"
+import "netlink"
 import "os"
 
 
 type Header [12]byte
 
-func NewMessage(afam byte, dl uint8, sl uint8, tos uint8, t Table, o Origin, s rtnetlink.Scope, T Type, f Flags)(*Header){
-  hdr := Header{afam, dl, sl, tos, byte(t), byte(o), byte(s), byte(T)}
+func NewMessage(afam rtnetlink.Family, dl uint8, sl uint8, tos uint8, t Table, o Origin, s rtnetlink.Scope, T Type, f Flags)(*Header){
+  hdr := Header{byte(afam), dl, sl, tos, byte(t), byte(o), byte(s), byte(T)}
   binary.LittleEndian.PutUint32(hdr[8:12], uint32(f))
   return &hdr
 }
 
 
 func (self Header)Len()(int) { return 12 }
-func (self Header)AddressFamily()(byte){ return self[0] }
+func (self Header)AddressFamily()(rtnetlink.Family){ return rtnetlink.Family(self[0]) }
 func (self Header)AddressDestLength()(uint8){ return self[1] }
 func (self Header)AddressSourceLength()(uint8){ return self[2] }
 func (self Header)TOS()(uint8){ return self[3] }
@@ -40,7 +41,7 @@ func (self Header)MarshalNetlink(pad int)(out []byte, err os.Error){
   if err == nil {
     out = make([]byte, 12)
     copy(out, self[0:])
-    out = rtnetlink.PadBytes(out, pad)
+    out = netlink.PadBytes(out, pad)
   }
   return
 }

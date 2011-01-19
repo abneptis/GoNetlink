@@ -2,9 +2,11 @@ package rtnetlink
 
 import "fmt"
 
+// The scope of an address/route
 type Scope byte
+
 const (
-  RT_SCOPE_UNIVERSE Scope = 00
+  RT_SCOPE_UNIVERSE Scope = 0
   RT_SCOPE_SITE     Scope = 200
   RT_SCOPE_LINK     Scope = 253
   RT_SCOPE_HOST     Scope = 254
@@ -20,6 +22,8 @@ var ScopeStrings = map[Scope]string {
   RT_SCOPE_NOWHERE: "RT_SCOPE_NOWHERE",
 }
 
+// Will return a string identifying the Scope,
+// if a 'user' table, RT_SCOPE_%d will be used.
 func (self Scope)String()(out string){
   out = ScopeStrings[self]
   if out == "" {

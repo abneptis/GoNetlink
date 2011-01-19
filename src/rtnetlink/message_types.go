@@ -2,6 +2,7 @@ package rtnetlink
 
 import "netlink"
 
+// netlink.MessageType's for RTNETLINK
 const (
 	RTM_NEWLINK netlink.MessageType = iota + netlink.MIN_TYPE
 	RTM_DELLINK

@@ -4,6 +4,7 @@ TARG=netlink
 
 
 GOFILES=\
+	error.go\
 	misc/attribute.go\
 	misc/pad.go\
 	misc/attr_helpers.go\

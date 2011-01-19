@@ -5,16 +5,16 @@ TARG=netlink
 
 GOFILES=\
 	error.go\
-	misc/attribute.go\
-	misc/pad.go\
-	misc/attr_helpers.go\
-	message/flags.go\
-	message/types.go\
-	message/header.go\
-	message/message.go\
-	socket/family.go\
-	socket/socket.go\
-	socket/address.go\
+	attribute.go\
+	pad.go\
+	attr_helpers.go\
+	flags.go\
+	types.go\
+	header.go\
+	message.go\
+	family.go\
+	socket.go\
+	address.go\
 	handler.go\
 
 

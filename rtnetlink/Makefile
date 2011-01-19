@@ -6,8 +6,8 @@ DEPS=../
 
 
 GOFILES=\
-	common/scope.go\
-	common/family.go\
+	scope.go\
+	family.go\
 	message_types.go\
 	header.go\
 	message.go\

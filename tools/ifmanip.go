@@ -36,12 +36,12 @@ func main(){
   l, err := lf.GetLinkByName(*ifName)
   if err == nil {
     if *doDown {
-      err = l.SetLinkState(^link.IFF_UP)
+      err = l.SetLinkState(^link.IFF_UP, link.IFF_UP)
       if err != nil { log.Printf("Couldn't turn down interface: %v", err) }
       l.Refresh()
     }
     if *doUp {
-      err = l.SetLinkState(link.IFF_UP)
+      err = l.SetLinkState(link.IFF_UP, link.IFF_UP)
       if err != nil { log.Printf("Couldn't turn up interface: %v", err) }
       l.Refresh()
     }

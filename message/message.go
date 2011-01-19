@@ -17,7 +17,9 @@ type NetlinkMarshaler interface {
 func NewMessage(t MessageType, f MessageFlags, u NetlinkMarshaler, pad int)(msg *Message, err os.Error){
   msg = &Message{Header: NewHeader(t,f,0) }
   msg.Body, err = u.MarshalNetlink(pad)
-  msg.Header.SetMessageLength(uint32(msg.Header.Len()) + uint32(len (msg.Body)))
+  if err == nil {
+    msg.Header.SetMessageLength(uint32(msg.Header.Len()) + uint32(len (msg.Body)))
+  }
   return
 }
 

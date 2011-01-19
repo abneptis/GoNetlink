@@ -33,9 +33,10 @@ func (self Header)MarshalNetlink(pad int)(out []byte, err os.Error){
   return
 }
 
+func (self Header)Flags()(Flags){ return Flags(binary.LittleEndian.Uint32(self[8:12])) }
+func (self *Header)SetFlags(f Flags){ binary.LittleEndian.PutUint32(self[8:12], uint32(f)) }
 func (self Header)InterfaceFamily()(rtnetlink.Family){ return rtnetlink.Family(self[0])}
 func (self Header)InterfaceType()(uint16){ return binary.LittleEndian.Uint16(self[2:4]) }
 func (self Header)InterfaceIndex()(uint32){ return binary.LittleEndian.Uint32(self[4:8]) }
-func (self Header)InterfaceFlags()(Flags){ return Flags(binary.LittleEndian.Uint32(self[8:12])) }
 func (self Header)InterfaceChanges()(Flags){ return Flags(binary.LittleEndian.Uint32(self[12:16])) }
 

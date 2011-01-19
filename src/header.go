@@ -4,6 +4,8 @@ import "os"
 import "encoding/binary"
 
 const HEADER_LENGTH = 16
+
+// Represents the header of a netlink.Message
 type Header [HEADER_LENGTH]byte
 
 func (self Header)Len()(int){ return HEADER_LENGTH}

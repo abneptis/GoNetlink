@@ -46,9 +46,11 @@ func (self *LinkHandler)LinkMTU()(i uint32){
 func (self *LinkHandler)SetLinkState(flag link.Flags)(err os.Error){
   var qry *netlink.Message
   if hdr, ok := self.cache.Header.(*link.Header); ok {
+    // While rtnetlink(7) says changes should always be IFF_QUERY, it has some
+    // behaviours that are undocumented - like limiting actions on SETLINK's to
+    // specific FLAGs.
     hdr = link.NewHeader(hdr.InterfaceFamily(), hdr.InterfaceType(), hdr.InterfaceIndex(), flag & link.IFF_UP, link.IFF_UP)
     msg := rtnetlink.Message{Header: hdr}
-    //qry, err = netlink.NewMessage(rtnetlink.RTM_NEWLINK, netlink.NLM_F_REPLACE|netlink.NLM_F_CREATE, msg, 4)
     qry, err = netlink.NewMessage(rtnetlink.RTM_SETLINK, netlink.NLM_F_ACK|netlink.NLM_F_REQUEST, msg, 4)
   } else {
     err = os.NewError("Cant set link flags (invalid cache)")

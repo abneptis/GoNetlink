@@ -2,6 +2,9 @@ package netlink
 
 type NetlinkFamily uint16 //?
 
+// The netlinkFamily is used for dialing a netlink socket.
+// A single socket can only be bound to a single family, and thus
+// a single Handler.
 const (
   NETLINK_ROUTE NetlinkFamily = iota
   NETLINK_UNUSED

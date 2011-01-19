@@ -5,13 +5,20 @@ import "os"
 import "bytes"
 import "encoding/binary"
 
+// A basic netlink type used for identifying
+// nlattrs in a message.
 type AttributeType uint16
 
+// An attribute is used to hold an Netlink Attribute.
+// An attribute is stored as a Length-Type-Value tuple.
+// Length and Type are 16 bit integers, so values may not
+// exceed 2^16.
 type Attribute struct {
   Type AttributeType
   Body []byte
 }
 
+// Marshals a netlink attribute as a full LTV tuple.
 func (self Attribute)MarshalNetlink(pad int)(out []byte, err os.Error){
   l := len(self.Body)
   out = make([]byte, l + 4)
@@ -22,6 +29,7 @@ func (self Attribute)MarshalNetlink(pad int)(out []byte, err os.Error){
   return
 }
 
+// Unmarshals a netlink attribute.
 func UnmarshalAttributes(in []byte, padding int)(out []Attribute, err os.Error){
   pos := 0
   for pos < len(in) {
@@ -42,11 +50,17 @@ func UnmarshalAttributes(in []byte, padding int)(out []Attribute, err os.Error){
   return
 }
 
+// Returns the padded bytes of a marshalled list of attributes.
+// Any marshalling error will cause the sequence to abort.
 func MarshalAttributes(in []Attribute, padding int)(out []byte, err os.Error){
   for i := range(in){
     var b []byte
     b, err = in[i].MarshalNetlink(padding)
-    out = bytes.Join([][]byte{out, b}, []byte{})
+    if err == nil {
+      out = bytes.Join([][]byte{out, b}, []byte{})
+    } else {
+      break
+    }
   }
   return
 }

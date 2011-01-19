@@ -35,7 +35,7 @@ func main(){
         if err == nil {
           log.Printf("Link[%d] (Family: %v; Type: %v; Flags: %v; Changes: %v)",
                      hdr.InterfaceIndex(),
-                     hdr.InterfaceFamily(), hdr.InterfaceType(), hdr.InterfaceFlags(),
+                     hdr.InterfaceFamily(), hdr.InterfaceType(), hdr.Flags(),
                      hdr.InterfaceChanges())
           for i := range(msg.Attributes){
             log.Printf("Attribute[%d]: %v", i, msg.Attributes[i])

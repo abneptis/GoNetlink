@@ -1,14 +1,13 @@
 
   GoNetlink aims to provide native bindings (no external libraries) to NetLink for Go.
 
-  It is a child project of GoGo (not released yet), but is growing to be usable in its own right at least
-as a reference project on "how to (start) talking to netlink with go".
+  It is a child project of GoGo (not released yet), but is growing to be usable in its own right at least as a reference project on "how to (start) talking to netlink with go".
 
-  All API's are subject to change, and patches are absolutely welcome.  Currently the basic API attempts to mirror
-that of RTNetlink usage, though higher-level access is a side goal of this project.
+  All API's are subject to change, and patches are absolutely welcome.  Currently the basic API attempts to mirror that of (RT)Netlink usage.
 
-  There's a very good chance there will be issues on non i386/amd64 archs, as they have not been tested
-and netlink doesn't always specify byte order.
+  RTManip is a sub-package that attempts to expose a limited subset of the functionality of Netlink without having to fight with the underlying structures.
+
+  There's a very good chance there will be issues on non i386/amd64 archs, as they have not been tested and netlink doesn't always specify byte order.
 
   Currently working:
   - RTNetlink: route, link, and addr calls (marshal, unmarshal, get attributes)

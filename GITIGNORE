@@ -5,3 +5,4 @@ _*
 tools/get_routes
 tools/get_addrs
 tools/get_links
+tools/ifmanip

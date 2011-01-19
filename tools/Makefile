@@ -1,6 +1,6 @@
 include $(GOROOT)/src/Make.inc
 
-all: get_addrs get_links get_routes
+all: get_addrs get_links get_routes ifmanip
 
 
 get_addrs.$(O): get_addrs.go
@@ -12,6 +12,9 @@ get_links.$(O): get_links.go
 get_routes.$(O): get_routes.go
 	$(GC) -o $@ $<
 
+ifmanip.$(O): ifmanip.go
+	$(GC) -o $@ $<
+
 get_addrs: get_addrs.$(O)
 	$(LD) -o $@ $<
 
@@ -19,6 +22,9 @@ get_links: get_links.$(O)
 	$(LD) -o $@ $<
 
 get_routes: get_routes.$(O)
+	$(LD) -o $@ $<
+
+ifmanip: ifmanip.$(O)
 	$(LD) -o $@ $<
 
 clean:

@@ -11,6 +11,7 @@ GOFILES=\
 	header.go\
 	table.go\
 	types.go\
+	attribute_types.go\
 
 
 include $(GOROOT)/src/Make.pkg

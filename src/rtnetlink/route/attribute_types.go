@@ -1,5 +1,7 @@
 package route
 
+import "netlink"
+
 /*
   Copyright (c) 2011, Abneptis LLC. All rights reserved.
   Original Author: James D. Nurmi <james@abneptis.com>
@@ -7,10 +9,9 @@ package route
   See LICENSE for details
 */
 
-type AttributeType uint16
 
 const (
-  RTA_UNSPEC      AttribyteType = iota
+  RTA_UNSPEC      netlink.AttributeType = iota
   RTA_DST
   RTA_SRC
   RTA_IIF
@@ -28,7 +29,7 @@ const (
   RTA_TABLE
 )
 
-var AttributeTypeStrings = map[AttributeType]string {
+var AttributeTypeStrings = map[netlink.AttributeType]string {
   RTA_UNSPEC: "RTA_UNSPEC",
   RTA_DST: "RTA_DST",
   RTA_SRC: "RTA_SRC",
@@ -45,8 +46,4 @@ var AttributeTypeStrings = map[AttributeType]string {
   RTA_SESSION: "RTA_SESSION",
   RTA_MP_ALGO: "RTA_MP_ALGO",
   RTA_TABLE: "RTA_TABLE",
-}
-
-func (self AttributeType)String()(string){
-  return AttributeTypeStrings[self]
 }

@@ -17,7 +17,7 @@ import "log"
 import "netlink"
 
 func main(){
-  rtmsg := route.NewMessage(0,0,0,0,0,0,0,0,0)
+  rtmsg := route.NewHeader(0,0,0,0,0,0,0,0,0)
   nlmsg, err := netlink.NewMessage(rtnetlink.RTM_GETROUTE, netlink.NLM_F_DUMP|netlink.NLM_F_REQUEST, rtmsg, 2)
   if err != nil {
     log.Exitf("Couldn't construct message: %v", err)

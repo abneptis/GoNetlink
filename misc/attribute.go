@@ -7,18 +7,20 @@ import "encoding/binary"
 
 type AttributeType uint16
 
-type Attribute interface {
-  AttributeType()(AttributeType)
-  Body()([]byte)
+type Attribute struct {
+  Type AttributeType
+  Body []byte
 }
 
-type attr struct {
-  _type AttributeType
-  _body []byte
+func (self Attribute)MarshalNetlink(pad int)(out []byte, err os.Error){
+  l := len(self.Body)
+  out = make([]byte, l + 4)
+  binary.LittleEndian.PutUint16(out[0:2], uint16(len(self.Body)+4))
+  binary.LittleEndian.PutUint16(out[2:4], uint16(self.Type))
+  copy(out[4:], self.Body[0:])
+  out = PadBytes(out, pad)
+  return
 }
-
-func (self attr)AttributeType()(AttributeType){ return self._type }
-func (self attr)Body()([]byte){ return self._body}
 
 func UnmarshalAttributes(in []byte, padding int)(out []Attribute, err os.Error){
   pos := 0
@@ -30,10 +32,10 @@ func UnmarshalAttributes(in []byte, padding int)(out []Attribute, err os.Error){
     }
     if l > 4 {
       t := binary.LittleEndian.Uint16(in[pos+2:pos+4])
-      out = append(out, attr{_type: AttributeType(t), _body:in[pos+4:pos + int(l)]})
+      out = append(out, Attribute{Type: AttributeType(t), Body:in[pos+4:pos + int(l)]})
       pos = Reposition(pos + int(l), padding)
     } else {
-      err = os.NewError(fmt.Sprintf("Invalid attribute (Len: %d):", l))
+      err = os.NewError(fmt.Sprintf("Invalid Attributeibute (Len: %d):", l))
       break
     }
   }
@@ -41,16 +43,11 @@ func UnmarshalAttributes(in []byte, padding int)(out []Attribute, err os.Error){
 }
 
 func MarshalAttributes(in []Attribute, padding int)(out []byte, err os.Error){
-  buff := bytes.NewBuffer(nil)
   for i := range(in){
-    ahdr := [4]byte{}
-    body := in[i].Body()
-    binary.LittleEndian.PutUint16(ahdr[2:4], uint16(in[i].AttributeType()))
-    binary.LittleEndian.PutUint16(ahdr[0:2], uint16(len(body)) + 4)
-    buff.Write(ahdr[0:])
-    buff.Write(body)
+    var b []byte
+    b, err = in[i].MarshalNetlink(padding)
+    out = bytes.Join([][]byte{out, b}, []byte{})
   }
-  out = PadBytes(buff.Bytes(), padding)
   return
 }
 

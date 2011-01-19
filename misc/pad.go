@@ -2,7 +2,7 @@ package netlink
 
 func PadBytes(in []byte, pad int)(out []byte){
   if pad > 0 {
-    pblk := (len(in) + 1) / pad
+    pblk := (len(in) + (pad - 1)) / pad
     fsize := pblk * pad
     if fsize != len(in) {
       out = make([]byte, fsize)

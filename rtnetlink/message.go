@@ -14,9 +14,9 @@ func NewMessage(h Header, attrs []netlink.Attribute)(*Message){
 }
 
 func (self *Message)SetAttribute(attr netlink.Attribute){
-  t := attr.AttributeType()
+  t := attr.Type
   for i := range(self.Attributes){
-    if t == self.Attributes[i].AttributeType() {
+    if t == self.Attributes[i].Type {
       self.Attributes[i] = attr
       return
     }
@@ -27,7 +27,7 @@ func (self *Message)SetAttribute(attr netlink.Attribute){
 
 func (self Message)GetAttribute(t netlink.AttributeType)(attr netlink.Attribute, err os.Error){
   for i := range(self.Attributes){
-    if t == self.Attributes[i].AttributeType() {
+    if t == self.Attributes[i].Type {
       attr = self.Attributes[i]
       return
     }
@@ -37,16 +37,14 @@ func (self Message)GetAttribute(t netlink.AttributeType)(attr netlink.Attribute,
 }
 
 func (self Message)MarshalNetlink(pad int)(out []byte, err os.Error){
-  buff := bytes.NewBuffer(nil)
-  bb, err := self.Header.MarshalNetlink(pad)
+  hb, err := self.Header.MarshalNetlink(pad)
   if err == nil {
-    buff.Write(bb)
+    var bb []byte
     bb, err = netlink.MarshalAttributes(self.Attributes, pad)
     if err == nil {
-      buff.Write(bb)
+      out = bytes.Join([][]byte{ hb, bb }, []byte{} )
     }
   }
-  out = netlink.PadBytes(buff.Bytes(), pad)
   return
 }
 

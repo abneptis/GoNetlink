@@ -1,4 +1,10 @@
 package rtmanip
+/*
+  Copyright (c) 2011, Abneptis LLC. All rights reserved.
+  Original Author: James D. Nurmi <james@abneptis.com>
+
+  See LICENSE for details
+*/
 
 import "netlink/rtnetlink/link"
 import "netlink/rtnetlink"

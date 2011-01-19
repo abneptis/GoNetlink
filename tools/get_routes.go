@@ -3,6 +3,13 @@ package main
 /* The output of this utility is JSON, but not intended to be easily human-readable.
    At this moment it exists to test the rtnetlink/route subsystem */
 
+/*
+  Copyright (c) 2011, Abneptis LLC. All rights reserved.
+  Original Author: James D. Nurmi <james@abneptis.com>
+
+  See LICENSE for details
+*/
+
 import "os"
 import "netlink/rtnetlink/route"
 import "netlink/rtnetlink"

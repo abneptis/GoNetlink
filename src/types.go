@@ -1,4 +1,10 @@
 package netlink
+/*
+  Copyright (c) 2011, Abneptis LLC. All rights reserved.
+  Original Author: James D. Nurmi <james@abneptis.com>
+
+  See LICENSE for details
+*/
 
 // The MessageType consists of 5 fixed "Netlink" types that indicate
 // message flow.

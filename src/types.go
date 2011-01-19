@@ -1,6 +1,9 @@
 package netlink
 
-
+// The MessageType consists of 5 fixed "Netlink" types that indicate
+// message flow.
+// All messageTypes above MIN_TYPE should be considered the 'property' of
+// the individual netlink socket family.
 type MessageType uint16
 
 // include/linux/netlink.h

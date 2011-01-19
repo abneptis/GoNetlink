@@ -5,15 +5,19 @@ import "bytes"
 import "os"
 import "io"
 
+// A netlink message contains a Netlink header,
+// and a body of bytes.
 type Message struct {
   Header *Header
   Body []byte
 }
 
+// NetlinkMarshaler's are used to pad and format netlink data.
 type NetlinkMarshaler interface {
   MarshalNetlink(int)([]byte, os.Error)
 }
 
+// Creates a new message from a marshalable object
 func NewMessage(t MessageType, f MessageFlags, u NetlinkMarshaler, pad int)(msg *Message, err os.Error){
   msg = &Message{Header: NewHeader(t,f,0) }
   msg.Body, err = u.MarshalNetlink(pad)
@@ -23,7 +27,9 @@ func NewMessage(t MessageType, f MessageFlags, u NetlinkMarshaler, pad int)(msg 
   return
 }
 
-
+// Reads a message from an io.Reader, with a specified padding.
+// NB: Netlink uses a very strict protocol, and it is encouraged
+// that r be a bufio.Reader
 func ReadMessage(r io.Reader, pad int)(msg *Message, err os.Error){
   var n int
   msg = &Message{Header: &Header{}}
@@ -46,6 +52,7 @@ func ReadMessage(r io.Reader, pad int)(msg *Message, err os.Error){
   return
 }
 
+// Marshals a message with appropriate padding (generally none).
 func (self Message)MarshalNetlink(pad int)(out []byte, err os.Error){
   hdrout, err := self.Header.MarshalNetlink(pad)
   if err == nil {

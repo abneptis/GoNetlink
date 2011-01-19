@@ -5,6 +5,8 @@ import "os"
 import "fmt"
 import "sync"
 
+// A handler implements a simple Mux for netlink messages, ensuring
+// each query gets a unique sequence number and a channel to collect responses.
 type Handler struct {
   sock *Socket
   recipients map[uint32]chan Message
@@ -12,7 +14,8 @@ type Handler struct {
   lock sync.Mutex
 }
 
-// This is not atomic...
+// Used as an atomic counter for sequence numbering.
+// No check is made to see that sequences aren't still in use on roll-over.
 func (self *Handler)Seq()(out uint32){
   self.lock.Lock()
   out = self.next_seq
@@ -25,6 +28,8 @@ func NewHandler(sock *Socket)(*Handler){
   return &Handler{sock:sock, recipients: map[uint32]chan Message{}, next_seq: 1}
 }
 
+// Send a message.  If SequenceNumber is unset, Seq() will be used
+// to generate one.
 func (self *Handler)Query(msg Message, l int, pad int)(ch chan Message, err os.Error){
   if msg.Header.MessageSequence() == 0 {
     msg.Header.SetMessageSequence(self.Seq())
@@ -38,13 +43,20 @@ func (self *Handler)Query(msg Message, l int, pad int)(ch chan Message, err os.E
   return
 }
 
+// Usually called in a goroutine, Start spawns a thread
+// that demux's incoming netlink responses.
+// Echan is used to report internal netlink errors, and may
+// be set to nil (but you will likely miss bugs!)
 func (self *Handler)Start(echan chan os.Error){
   r := bufio.NewReader(self.sock)
   for {
     msg, err := ReadMessage(r, 4)
     if err == nil {
       if self.recipients[msg.Header.MessageSequence()] == nil {
-        echan <- os.NewError(fmt.Sprintf("GoNetlink: No handler found for sequence number: %d", msg.Header.MessageSequence()))
+        if nil != echan {
+          echan <- os.NewError(fmt.Sprintf("GoNetlink: No handler found for seq %d",
+                               msg.Header.MessageSequence()))
+        }
         continue
       } else {
         self.recipients[msg.Header.MessageSequence()] <- *msg
@@ -54,7 +66,9 @@ func (self *Handler)Start(echan chan os.Error){
         }
       }
     } else {
-      echan <- err
+      if nil != echan {
+        echan <- err
+      }
     }
   }
   return

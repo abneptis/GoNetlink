@@ -14,7 +14,7 @@ import "os"
 
 type Header [12]byte
 
-func NewMessage(afam rtnetlink.Family, dl uint8, sl uint8, tos uint8, t Table, o Origin, s rtnetlink.Scope, T Type, f Flags)(*Header){
+func NewHeader(afam rtnetlink.Family, dl uint8, sl uint8, tos uint8, t Table, o Origin, s rtnetlink.Scope, T Type, f Flags)(*Header){
   hdr := Header{byte(afam), dl, sl, tos, byte(t), byte(o), byte(s), byte(T)}
   binary.LittleEndian.PutUint32(hdr[8:12], uint32(f))
   return &hdr

@@ -7,9 +7,9 @@ import "flag"
 import "log"
 import "os"
 
-var DoUp = flag.Bool("up",false, "Turn interface up")
-var DoDown = flag.Bool("down",false, "Turn interface up")
-var IfName = flag.String("ifname", "", "Interface to use")
+var doUp = flag.Bool("up",false, "Turn interface up")
+var doDown = flag.Bool("down",false, "Turn interface up")
+var ifName = flag.String("ifname", "", "Interface to use")
 
 func main(){
   flag.Parse()
@@ -26,14 +26,14 @@ func main(){
   }()
   go h.Start(ec)
   lf := rtmanip.NewLinkFinder(h)
-  l, err := lf.GetLinkByName(*IfName)
+  l, err := lf.GetLinkByName(*ifName)
   if err == nil {
-    if *DoDown {
+    if *doDown {
       err = l.SetLinkState(^link.IFF_UP)
       if err != nil { log.Printf("Couldn't turn down interface: %v", err) }
       l.Refresh()
     }
-    if *DoUp {
+    if *doUp {
       err = l.SetLinkState(link.IFF_UP)
       if err != nil { log.Printf("Couldn't turn up interface: %v", err) }
       l.Refresh()

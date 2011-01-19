@@ -25,6 +25,7 @@ const (
   IFF_DORMANT
   IFF_ECHO
   IFF_VOLATILE    Flags = (IFF_LOOPBACK|IFF_POINTOPOINT|IFF_BROADCAST|IFF_ECHO|IFF_MASTER|IFF_SLAVE|IFF_RUNNING|IFF_LOWER_UP|IFF_DORMANT)
+  IFF_QUERY Flags = 0xffffffff
 )
 
 func (self Flags)Strings()(out []string){
@@ -51,5 +52,5 @@ func (self Flags)Strings()(out []string){
 }
 
 func (self Flags)String()(string){
-  return strings.Join(self.Strings(), ",")
+  return strings.Join(self.Strings(), "|")
 }

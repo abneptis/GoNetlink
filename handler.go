@@ -49,8 +49,8 @@ func (self *Handler)Start(echan chan os.Error){
       } else {
         self.recipients[msg.Header.MessageSequence()] <- *msg
         if msg.Header.MessageFlags() & NLM_F_MULTI == 0 {
-            close(self.recipients[msg.Header.MessageSequence()])
-            self.recipients[msg.Header.MessageSequence()] = nil, false
+          close(self.recipients[msg.Header.MessageSequence()])
+          self.recipients[msg.Header.MessageSequence()] = nil, false
         }
       }
     } else {

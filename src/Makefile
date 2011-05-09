@@ -17,6 +17,8 @@ GOFILES=\
 	address.go\
 	handler.go\
 
+CGOFILES=\
+	 nlbind.go
 
 include $(GOROOT)/src/Make.pkg
 

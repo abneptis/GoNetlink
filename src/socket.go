@@ -54,3 +54,8 @@ func (self *Socket)Read(in []byte)(n int, err os.Error){
   return
 }
 
+// Bind the netlink socket to receive multicast messages
+func (self *Socket)Bind(pid, groups uint32) (err os.Error) {
+	err = nlBind(self, pid, groups)
+	return
+}

@@ -17,6 +17,5 @@ GOFILES=\
 	address.go\
 	handler.go\
 
-
 include $(GOROOT)/src/Make.pkg
 

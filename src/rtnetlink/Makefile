@@ -11,6 +11,7 @@ GOFILES=\
 	message_types.go\
 	header.go\
 	message.go\
+	groups.go\
 
 
 include $(GOROOT)/src/Make.pkg

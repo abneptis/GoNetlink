@@ -54,3 +54,12 @@ func (self *Socket)Read(in []byte)(n int, err os.Error){
   return
 }
 
+// Bind the netlink socket to receive multicast messages
+func (self *Socket)Bind(pid, groups uint32) (err os.Error) {
+	addr := &syscall.SockaddrNetlink{Pid: pid, Groups: groups}
+	e := syscall.Bind(self.fd, addr)
+	if e != 0 {
+		err = os.Errno(e)
+	}
+	return
+}

@@ -42,9 +42,3 @@ func (self *Error) UnmarshalNetlink(in []byte, pad int) (err error) {
 	return
 }
 
-
-// Implements os.Error by using err.Error(-Code()) 
-func (self Error) Error() string {
-//	return Errstr(int(-self.Code()))
-	return "Error string unimplemented"	
-}

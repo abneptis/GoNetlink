@@ -7,23 +7,11 @@ package netlink
   See LICENSE for details
 */
 
-import (
-	"errors"
-)
 import "syscall"
-import "fmt"
 
 // A netlink.Socket implements the lowest level of netlink communications.
 type Socket struct {
 	fd int
-}
-
-func toErr(eno int) (err error) {
-	if eno != 0 {
-		//err = errors.New(syscall.Errstr(eno))
-		err = errors.New(fmt.Sprintf("undefined errorstring for error number %s", eno))
-	}
-	return
 }
 
 // Dials a netlink socket.  Usually you do not need permissions for this,

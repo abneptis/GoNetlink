@@ -1,0 +1,53 @@
+package route
+
+/*
+  Copyright (c) 2011, Abneptis LLC. All rights reserved.
+  Original Author: James D. Nurmi <james@abneptis.com>
+
+  See LICENSE for details
+*/
+
+import (
+	"encoding/binary"
+	"errors"
+)
+import "netlink/rtnetlink"
+import "netlink"
+
+type Header [12]byte
+
+func NewHeader(afam rtnetlink.Family, dl uint8, sl uint8, tos uint8, t Table, o Origin, s rtnetlink.Scope, T Type, f Flags) *Header {
+	hdr := Header{byte(afam), dl, sl, tos, byte(t), byte(o), byte(s), byte(T)}
+	binary.LittleEndian.PutUint32(hdr[8:12], uint32(f))
+	return &hdr
+}
+
+func (self Header) Len() int                        { return 12 }
+func (self Header) AddressFamily() rtnetlink.Family { return rtnetlink.Family(self[0]) }
+func (self Header) AddressDestLength() uint8        { return self[1] }
+func (self Header) AddressSourceLength() uint8      { return self[2] }
+func (self Header) TOS() uint8                      { return self[3] }
+func (self Header) RoutingTable() Table             { return Table(self[4]) }
+func (self Header) RouteOrigin() Origin             { return Origin(self[5]) }
+func (self Header) AddressScope() rtnetlink.Scope   { return rtnetlink.Scope(self[6]) }
+func (self Header) RouteType() Type                 { return Type(self[7]) }
+func (self Header) Flags() Flags                    { return Flags(binary.LittleEndian.Uint32(self[8:12])) }
+
+func (self *Header) UnmarshalNetlink(in []byte, pad int) (err error) {
+	if len(in) < 12 {
+		err = errors.New("Too short to be a valid Routing Message")
+	}
+	if err == nil {
+		copy(self[0:12], in[0:12])
+	}
+	return
+}
+
+func (self Header) MarshalNetlink(pad int) (out []byte, err error) {
+	if err == nil {
+		out = make([]byte, 12)
+		copy(out, self[0:])
+		out = netlink.PadBytes(out, pad)
+	}
+	return
+}
